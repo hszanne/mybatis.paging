@@ -6,7 +6,7 @@ Mybatis 分页轮子
 <bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
     <property name="dataSource" ref="dataSource" />
     <property name="plugins">
-        <bean class="hlns.mybatis.paging.PageInterceptor">
+        <bean class="hszanne.mybatis.paging.PageInterceptor">
             <property name="properties">
                 <util:properties location="/WEB-INF/conf/mybatis-page.properties"/>
             </property>
