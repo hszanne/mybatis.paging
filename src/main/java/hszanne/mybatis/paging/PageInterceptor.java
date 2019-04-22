@@ -62,7 +62,7 @@ public class PageInterceptor implements Interceptor{
             return invocation.proceed();
         }
 
-        MappedStatement countMappedStatement = getPageMapStatement("count", this.dialect, mStatement, null);
+        MappedStatement countMappedStatement = getPageMapStatement("count", this.getDialect(), mStatement, null);
         
         if( page.needTotalRecordCount() || page.isOnlyGetTotalRecordCount() ) {
             List<Integer> count = executor.query(countMappedStatement, paramObject, RowBounds.DEFAULT, (ResultHandler<?>)invocation.getArgs()[3]);
@@ -73,7 +73,7 @@ public class PageInterceptor implements Interceptor{
             return Collections.emptyList();
         }
 
-        MappedStatement pageMappedStatement = getPageMapStatement("page", this.dialect, mStatement, page);
+        MappedStatement pageMappedStatement = getPageMapStatement("page", this.getDialect(), mStatement, page);
         invocation.getArgs()[0] = pageMappedStatement;
 
         // 将执行权交给下一个拦截器
@@ -108,7 +108,15 @@ public class PageInterceptor implements Interceptor{
     public void setProperties(Properties properties) {
         String dialect = properties.getProperty("dialect");
         if( null != dialect ){
-            this.dialect = dialect.toLowerCase();
+            this.setDialect(dialect.toLowerCase());
         }
+    }
+
+    public String getDialect() {
+        return dialect;
+    }
+
+    public void setDialect(String dialect) {
+        this.dialect = dialect;
     }
 }
